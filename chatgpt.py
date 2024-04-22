@@ -11,6 +11,9 @@ CORS(app)
 # Set the OpenAI API key
 os.environ["OPENAI_API_KEY"] = const.APIKEY
 
+# Set a secret key for Flask
+app.secret_key = os.urandom(24)
+
 @app.route('/query', methods=['GET'])
 def handle_query():
     try:
@@ -34,4 +37,5 @@ def handle_query():
         return jsonify({'error': 'An error occurred while processing the request'}), 500
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    # For production use, use a production server like Gunicorn or uWSGI
+    app.run(host='0.0.0.0', port=5000)
