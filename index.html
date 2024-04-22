@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Query Form</title>
+</head>
+<body>
+    <h1>Query Form</h1>
+    <form id="queryForm">
+        <label for="query">Enter your query:</label><br>
+        <input type="text" id="query" name="query"><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <div id="response"></div>
+
+    <script>
+        const queryForm = document.getElementById('queryForm');
+        const responseDiv = document.getElementById('response');
+
+        queryForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            
+            const query = document.getElementById('query').value;
+
+            try {
+                const response = await fetch(`http://localhost:5000/query?q=${encodeURIComponent(query)}`);
+                const responseData = await response.json();
+                responseDiv.innerHTML = `<p>Response: ${responseData.response}</p>`;
+            } catch (error) {
+                console.error('Error:', error);
+                responseDiv.innerHTML = `<p>Error: ${error.message}</p>`;
+            }
+        });
+    </script>
+</body>
+</html>
